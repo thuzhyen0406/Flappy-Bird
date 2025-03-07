@@ -4,6 +4,9 @@
 const int SCREEN_WIDTH = 750;
 const int SCREEN_HEIGHT = 450;
 
+bool toggleText = true;  // Bật/Tắt chữ
+unsigned int lastTime = 0;
+
 void waitUntilKeyPressed()
 {
     SDL_Event e;
