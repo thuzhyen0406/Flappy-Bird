@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1741288680 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
+	<windows.h>
+	<string>
+	<SDL.h>
+	<SDL_image.h>
+	"background.h"
+	"overall.h"
+	<SDL_ttf.h>
+
+1739985586 d:\huyen\lap trinh nang cao\flappy bird\background.h
+	"overall.h"
+
+1739988985 d:\huyen\lap trinh nang cao\flappy bird\overall.h
+
