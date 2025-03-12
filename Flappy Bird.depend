@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1741366536 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
+1741752117 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
 	<windows.h>
 	<string>
 	<SDL.h>
@@ -14,5 +14,5 @@
 
 1741364451 d:\huyen\lap trinh nang cao\flappy bird\overall.h
 
-1741367164 d:\huyen\lap trinh nang cao\flappy bird\text.h
+1741752347 d:\huyen\lap trinh nang cao\flappy bird\text.h
 
