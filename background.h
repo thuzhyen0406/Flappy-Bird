@@ -1,10 +1,23 @@
 #ifndef BACKFROUND_H
 #define BACKGROUND_H
 #include "overall.h"
+
+SDL_Rect bgRect1 = {bgX, SCREEN_HEIGHT - 74, SCREEN_WIDTH, 74};
+SDL_Rect bgRect2 = {bgX + SCREEN_WIDTH, SCREEN_HEIGHT - 74, SCREEN_WIDTH, 74};
 void logErrorAndExit(const char* msg, const char* error)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "%s: %s", msg, error);
     SDL_Quit();
+}
+
+void renderTexture(SDL_Texture *texture, int x, int y, SDL_Renderer *ren)
+{
+    SDL_Rect dest;
+    dest.x = x;
+    dest.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+    SDL_RenderCopy(ren, texture, NULL, &dest);
+
 }
 
 SDL_Window* initSDL(int SCREEN_WIDTH, int SCREEN_HEIGHT, const char* WINDOW_TITLE)

@@ -2,10 +2,11 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "background.h"
 #include "overall.h"
 #include <SDL_ttf.h>
 #include "text.h"
+#include "bgr_wait.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -34,55 +35,62 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    SDL_Color textColor = {255, 255, 102, 255}, outlineColor = {0, 0, 0, 255};
 
-     SDL_Texture* textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, outlineColor);
-
-    SDL_Rect textRect = {200, 350, 320, 25};
-
-    bool showT = true;
+    int bgX = 0, ok = 0;
+    bool showT = true, toggleText = true;
+    Uint32 lastTime = SDL_GetTicks();
+    SDL_Texture* textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, outlineColor);
     while (running) {
-
+            waitPress(e,running, ok);
      //   SDL_DestroyTexture(outlineTex);
-     if (SDL_GetTicks() - lastTime > 800) {
-            toggleText = !toggleText;
-            lastTime = SDL_GetTicks();
-        }
-        SDL_RenderClear(ren);
-        SDL_RenderCopy(ren, bgr, NULL, NULL);
-        if (toggleText && showT) {
-            SDL_RenderCopy(ren, textTex, NULL, &textRect);
-        }
-
-        SDL_RenderPresent(ren);
-
-
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                running = false;
-            }
-            if (e.type == SDL_KEYDOWN) {
-                if (e.key.keysym.sym == SDLK_ESCAPE) {
-                    running = false;
-                }
-
-                if (e.key.keysym.sym == SDLK_RETURN) {
-                     //ren = createRenderer(window);
-                     SDL_RenderClear(ren);
-                        SDL_DestroyTexture(bgr);
-                          bgr = loadTexture("Data/Image/background2.jpg", ren);
-                            SDL_RenderCopy( ren, bgr, NULL, NULL);
-                            SDL_RenderPresent( ren );
-                            showT = false;
-                }
-
-
-            }
-        }
-
-
+            rStart(lastTime, toggleText, bgr, ren, textTex);
 
     }
+
+    if(ok == 1)
+    {
+        running = true;
+        bgr = loadTexture("Data/Image/background2.jpg", ren);
+        rebegin(bgr, ren, running, e);
+        SDL_Texture* nen = loadTexture("Data/Image/nendat.jpg", ren);
+        int check = 1;
+        Uint32 lastFrameTime = SDL_GetTicks();
+        while(running)
+        {
+        waitPress(e, running, check);
+        Uint32 currentFrameTime = SDL_GetTicks();
+        float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
+        lastFrameTime = currentFrameTime;
+
+             bgX -= BG_SPEED * deltaTime * 60;
+
+                if (bgX <= -SCREEN_WIDTH) {
+                       bgX += SCREEN_WIDTH;  // Reset khi chạy hết ảnh
+
+                }
+
+
+             SDL_RenderClear(ren);
+            SDL_RenderCopy(ren, bgr, NULL, NULL);
+            SDL_RenderCopy(ren, nen, NULL, &bgRect1);
+            SDL_RenderCopy(ren, nen, NULL, &bgRect2);
+
+            SDL_Delay(16);
+
+                SDL_RenderPresent( ren );
+            }
+        }
+
+
+
+//        if(ok)
+//        {
+
+//        }
+
+
+
+
 
       TTF_CloseFont(font);
 // day la ket thuc
@@ -94,3 +102,5 @@ int main(int argc, char *argv[])
     SDL_Quit();
     return 0;
 }
+
+
