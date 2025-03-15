@@ -1,9 +1,6 @@
 #ifndef BACKFROUND_H
 #define BACKGROUND_H
 #include "overall.h"
-
-SDL_Rect bgRect1 = {bgX, SCREEN_HEIGHT - 74, SCREEN_WIDTH, 74};
-SDL_Rect bgRect2 = {bgX + SCREEN_WIDTH, SCREEN_HEIGHT - 74, SCREEN_WIDTH, 74};
 void logErrorAndExit(const char* msg, const char* error)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "%s: %s", msg, error);

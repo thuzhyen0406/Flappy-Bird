@@ -1,8 +1,9 @@
 #ifndef OVERALL_H
 #define OVERALL_H
 
-const int SCREEN_WIDTH = 750;
-const int SCREEN_HEIGHT = 450;
+const int SCREEN_WIDTH = 850;
+const int SCREEN_HEIGHT = 500;
+const int margin_bottom = 74;
 const int BG_SPEED = 2;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;

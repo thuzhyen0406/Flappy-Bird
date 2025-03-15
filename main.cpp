@@ -2,11 +2,14 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "overall.h"
 #include <SDL_ttf.h>
 #include "text.h"
 #include "bgr_wait.h"
+#include "pipe.h"
+#include <ctime>
+#include <cstdlib>
 
+vector<Pipe> pipes;
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +17,16 @@ int main(int argc, char *argv[])
     SDL_Renderer* ren = createRenderer(window);
 
     SDL_Texture* bgr = loadTexture("Data/Image/begin_BR.jpg", ren);
+    SDL_Texture* upperPipeTex = loadTexture("Data/Image/pipe_up.png", ren);
+    SDL_Texture* lowerPipeTex = loadTexture("Data/Image/pipe_down.png", ren);
+//    int width, height;
+//    SDL_QueryTexture(upperPipeTex, NULL, NULL, &width, &height);
+//printf("Kích thước upperPipeTex: %d x %d\n", width, height);
+//
+//SDL_QueryTexture(lowerPipeTex, NULL, NULL, &width, &height);
+//printf("Kích thước lowerPipeTex: %d x %d\n", width, height);
+
+
     SDL_RenderCopy( ren, bgr, NULL, NULL);
 
     SDL_RenderPresent( ren );
@@ -46,7 +59,7 @@ int main(int argc, char *argv[])
             rStart(lastTime, toggleText, bgr, ren, textTex);
 
     }
-
+    srand(time(0));
     if(ok == 1)
     {
         running = true;
@@ -55,9 +68,12 @@ int main(int argc, char *argv[])
         SDL_Texture* nen = loadTexture("Data/Image/nendat.jpg", ren);
         int check = 1;
         Uint32 lastFrameTime = SDL_GetTicks();
+        initPipes(pipes);
+        renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
+          SDL_RenderPresent( ren );
         while(running)
         {
-        waitPress(e, running, check);
+        waitPress(e, running, check); // can doi 1 ham khac
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentFrameTime;
@@ -69,11 +85,14 @@ int main(int argc, char *argv[])
 
                 }
 
-
+                SDL_Rect bgRect1 = {bgX, SCREEN_HEIGHT - 76, SCREEN_WIDTH, 76};
+                SDL_Rect bgRect2 = {bgX + SCREEN_WIDTH, SCREEN_HEIGHT - 76, SCREEN_WIDTH, 76};
              SDL_RenderClear(ren);
             SDL_RenderCopy(ren, bgr, NULL, NULL);
             SDL_RenderCopy(ren, nen, NULL, &bgRect1);
             SDL_RenderCopy(ren, nen, NULL, &bgRect2);
+            updatePipes(pipes);
+            renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
 
             SDL_Delay(16);
 
@@ -83,9 +102,9 @@ int main(int argc, char *argv[])
 
 
 
-//        if(ok)
+//        if(check)
 //        {
-
+//
 //        }
 
 
@@ -95,6 +114,8 @@ int main(int argc, char *argv[])
       TTF_CloseFont(font);
 // day la ket thuc
     SDL_DestroyTexture(bgr);
+    SDL_DestroyTexture(upperPipeTex);
+    SDL_DestroyTexture(lowerPipeTex);
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(window);
 
@@ -102,5 +123,6 @@ int main(int argc, char *argv[])
     SDL_Quit();
     return 0;
 }
+
 
 
