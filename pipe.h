@@ -4,7 +4,7 @@
 #include "overall.h"
 const int PIPE_WIDTH = 65;
 const int PIPE_HEIGHT = 373;
-const int PIPE_GAP = 140;
+const int PIPE_GAP = 160;
 const int PIPE_SPEED = 2;
 using namespace std;
 

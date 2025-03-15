@@ -6,10 +6,12 @@
 #include "text.h"
 #include "bgr_wait.h"
 #include "pipe.h"
+#include "bird.h"
 #include <ctime>
 #include <cstdlib>
 
 vector<Pipe> pipes;
+
 
 int main(int argc, char *argv[])
 {
@@ -26,17 +28,11 @@ int main(int argc, char *argv[])
 //SDL_QueryTexture(lowerPipeTex, NULL, NULL, &width, &height);
 //printf("Kích thước lowerPipeTex: %d x %d\n", width, height);
 
-
-    SDL_RenderCopy( ren, bgr, NULL, NULL);
-
-    SDL_RenderPresent( ren );
-
-
       SDL_Event e;
 
     bool running = true;
 
-        if (TTF_Init() == -1) {
+        if (TTF_Init() == -1 || !loadMedia(ren)) {
             SDL_Log("Lỗi khởi tạo SDL_ttf: %s", TTF_GetError());
             return -1;
         }
@@ -49,6 +45,9 @@ int main(int argc, char *argv[])
     }
 
 
+    SDL_RenderCopy( ren, bgr, NULL, NULL);
+
+    SDL_RenderPresent( ren );
     int bgX = 0, ok = 0;
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
@@ -59,9 +58,12 @@ int main(int argc, char *argv[])
             rStart(lastTime, toggleText, bgr, ren, textTex);
 
     }
+    //bdau background trôi -> hiện chim
+
     srand(time(0));
     if(ok == 1)
     {
+        int frame = 0;
         running = true;
         bgr = loadTexture("Data/Image/background2.jpg", ren);
         rebegin(bgr, ren, running, e);
@@ -69,11 +71,13 @@ int main(int argc, char *argv[])
         int check = 1;
         Uint32 lastFrameTime = SDL_GetTicks();
         initPipes(pipes);
-        renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
-          SDL_RenderPresent( ren );
+//        renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
+//        SDL_RenderPresent( ren );
+//
         while(running)
         {
-        waitPress(e, running, check); // can doi 1 ham khac
+        waitPress2(running, e, birdVelocity, JUMP_FORCE); // can doi 1 ham khac
+        update_bird(birdVelocity, birdY, birdRect);
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentFrameTime;
@@ -94,11 +98,18 @@ int main(int argc, char *argv[])
             updatePipes(pipes);
             renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
 
+           SDL_Texture* currentBird = birdImages[(frame / birdDelay) % 2];
+
+        SDL_RenderCopy(ren, currentBird, nullptr, &birdRect);
             SDL_Delay(16);
 
                 SDL_RenderPresent( ren );
+                frame++;
+
+            if(!vacham(pipes, birdY)) running = false;
+
             }
-        }
+    }
 
 
 
@@ -113,6 +124,9 @@ int main(int argc, char *argv[])
 
       TTF_CloseFont(font);
 // day la ket thuc
+    for (auto& img : birdImages) {
+        SDL_DestroyTexture(img);
+    }
     SDL_DestroyTexture(bgr);
     SDL_DestroyTexture(upperPipeTex);
     SDL_DestroyTexture(lowerPipeTex);

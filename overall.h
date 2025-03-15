@@ -4,7 +4,7 @@
 const int SCREEN_WIDTH = 850;
 const int SCREEN_HEIGHT = 500;
 const int margin_bottom = 74;
-const int BG_SPEED = 2;
+const int BG_SPEED = 3;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;
 
@@ -49,5 +49,24 @@ void waitPress(SDL_Event &e, bool &running, int &ok)
             }
 
         }
+}
+
+void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUMP_FORCE)
+{
+     while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT) {
+                running = false;
+            }
+            else if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_ESCAPE)
+                    running = false;
+                else birdVelocity = JUMP_FORCE;
+
+
+            }
+            else if(e.type == SDL_MOUSEBUTTONDOWN)
+                 birdVelocity = JUMP_FORCE;
+
+     }
 }
 #endif // OVERALL_H

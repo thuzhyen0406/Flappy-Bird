@@ -34,6 +34,8 @@
 		</Compiler>
 		<Unit filename="background.h" />
 		<Unit filename="bgr_wait.h" />
+		<Unit filename="bird.cpp" />
+		<Unit filename="bird.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="overall.h" />
 		<Unit filename="pipe.h" />
