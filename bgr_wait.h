@@ -2,6 +2,8 @@
 #define bgr_wait
 #include "overall.h"
 #include "background.h"
+
+
 void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
 {
 
@@ -16,11 +18,7 @@ void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
           }
 }
 
-SDL_Color textColor = {255, 255, 102, 255}, outlineColor = {0, 0, 0, 255};
 
-
-
-SDL_Rect textRect = {230, 400, 400, 28};
 void rStart(Uint32 &lastTime, bool &toggleText, SDL_Texture* bgr, SDL_Renderer* ren, SDL_Texture* textTex )
 {
     if (SDL_GetTicks() - lastTime > 800) {

@@ -8,6 +8,22 @@ const int BG_SPEED = 3;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;
 
+
+void Exit(SDL_Texture* birdImages[2], SDL_Window* window, SDL_Renderer* ren, SDL_Texture* bgr, SDL_Texture* upperPipeTex, SDL_Texture* lowerPipeTex)
+{
+    for (int i = 0; i < 2; i++) {
+            SDL_DestroyTexture(birdImages[i]);
+            birdImages[i] = nullptr;
+    }
+    SDL_DestroyTexture(bgr);
+    SDL_DestroyTexture(upperPipeTex);
+    SDL_DestroyTexture(lowerPipeTex);
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(window);
+
+    TTF_Quit();
+    SDL_Quit();
+}
 int waitUntilKeyPressed(SDL_Event &e)
 {
     while (true) {

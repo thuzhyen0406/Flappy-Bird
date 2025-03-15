@@ -15,18 +15,13 @@ vector<Pipe> pipes;
 
 int main(int argc, char *argv[])
 {
+
     SDL_Window* window = initSDL(SCREEN_WIDTH, SCREEN_HEIGHT, "Flappy Bird");
     SDL_Renderer* ren = createRenderer(window);
 
     SDL_Texture* bgr = loadTexture("Data/Image/begin_BR.jpg", ren);
     SDL_Texture* upperPipeTex = loadTexture("Data/Image/pipe_up.png", ren);
     SDL_Texture* lowerPipeTex = loadTexture("Data/Image/pipe_down.png", ren);
-//    int width, height;
-//    SDL_QueryTexture(upperPipeTex, NULL, NULL, &width, &height);
-//printf("Kích thước upperPipeTex: %d x %d\n", width, height);
-//
-//SDL_QueryTexture(lowerPipeTex, NULL, NULL, &width, &height);
-//printf("Kích thước lowerPipeTex: %d x %d\n", width, height);
 
       SDL_Event e;
 
@@ -36,21 +31,21 @@ int main(int argc, char *argv[])
             SDL_Log("Lỗi khởi tạo SDL_ttf: %s", TTF_GetError());
             return -1;
         }
-          TTF_Font* font = TTF_OpenFont("Consolas.ttf", 24);
 
+     TTF_Font* font = TTF_OpenFont("Data/FONT/Consolas.ttf", 24);
     if (!font) {
-        SDL_Log("Không thể tải font: %s", TTF_GetError());
-        SDL_Quit();
-        return 0;
-    }
+            SDL_Log("Không thể tải font: %s", TTF_GetError());
+            SDL_Quit();
+            return 0;
+        }
 
-
-    SDL_RenderCopy( ren, bgr, NULL, NULL);
-
-    SDL_RenderPresent( ren );
+//    SDL_RenderCopy( ren, bgr, NULL, NULL);
+//
+//    SDL_RenderPresent( ren );
     int bgX = 0, ok = 0;
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
+
     SDL_Texture* textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, outlineColor);
     while (running) {
             waitPress(e,running, ok);
@@ -71,13 +66,24 @@ int main(int argc, char *argv[])
         int check = 1;
         Uint32 lastFrameTime = SDL_GetTicks();
         initPipes(pipes);
+        loadHighScore();
 //        renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
 //        SDL_RenderPresent( ren );
 //
+        bool die = false;
+        SDL_Rect textRect;
+        TTF_Font* font2 = TTF_OpenFont("Data/FONT/Consolas.ttf", 24);
+        if (!font2) {
+            SDL_Log("Không thể tải font: %s", TTF_GetError());
+            SDL_DestroyTexture(bgr);
+            SDL_Quit();
+            return 0;
+        }
         while(running)
         {
-        waitPress2(running, e, birdVelocity, JUMP_FORCE); // can doi 1 ham khac
-        update_bird(birdVelocity, birdY, birdRect);
+        waitPress2(running, e, birdVelocity, JUMP_FORCE);
+
+        update_bird(birdVelocity, birdY, birdRect, birdAngle);
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentFrameTime;
@@ -100,13 +106,30 @@ int main(int argc, char *argv[])
 
            SDL_Texture* currentBird = birdImages[(frame / birdDelay) % 2];
 
-        SDL_RenderCopy(ren, currentBird, nullptr, &birdRect);
-            SDL_Delay(16);
 
-                SDL_RenderPresent( ren );
+            render_bird(ren, currentBird, birdRect, birdAngle);
+            SDL_Delay(16);
+            checkPass(pipes, score);
+             if(!vacham(pipes, birdY)) running = false, die = true;
+              // Màu trắng
+//              //in điểm hiện tại
+        SDL_Texture* textTexture = createText(ren, font2, to_string(score), white, white);
+        SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
+        SDL_Rect textRect = {(SCREEN_WIDTH - textW * 2) / 2, 20, textW*2, 50};
+        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+        textTexture = createText(ren, font2, "BEST SCORE: " + to_string(highScore), lightPink, lightPink);
+         SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
+        textRect = {20, 10, textW, 15};
+        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+            SDL_RenderPresent(ren);
+
                 frame++;
 
-            if(!vacham(pipes, birdY)) running = false;
+
+
+        }
+            if(die)
+            {
 
             }
     }
@@ -124,17 +147,8 @@ int main(int argc, char *argv[])
 
       TTF_CloseFont(font);
 // day la ket thuc
-    for (auto& img : birdImages) {
-        SDL_DestroyTexture(img);
-    }
-    SDL_DestroyTexture(bgr);
-    SDL_DestroyTexture(upperPipeTex);
-    SDL_DestroyTexture(lowerPipeTex);
-    SDL_DestroyRenderer(ren);
-    SDL_DestroyWindow(window);
 
-    TTF_Quit();
-    SDL_Quit();
+    Exit(birdImages, window, ren, bgr, upperPipeTex, lowerPipeTex);
     return 0;
 }
 

@@ -1,7 +1,7 @@
 #ifndef bird_h
 #define bird_h
 #include "pipe.h"
-
+#include "score.h"
 using namespace std;
 SDL_Texture* birdImages[2] = {nullptr, nullptr};
 const int BIRD_X = 300;
@@ -11,8 +11,9 @@ const int birdDelay = 10;
 const float GRAVITY = 0.4f; // Trọng lực kéo chim xuống
 const float JUMP_FORCE = -7.0f; // Lực nhảy lên
 float birdVelocity = 0; // Vận tốc chim
+float birdAngle = 0;
 int birdY = BIRD_Y;
-SDL_Rect birdRect = {BIRD_X, BIRD_Y, 50, 50};
+SDL_Rect birdRect = {BIRD_X, BIRD_Y, 60, 50};
 bool loadMedia(SDL_Renderer* ren) {
     birdImages[0] = loadTexture("Data/Image/bird3.png", ren);
     birdImages[1] = loadTexture("Data/Image/bird4.png", ren);
@@ -20,11 +21,18 @@ bool loadMedia(SDL_Renderer* ren) {
     return birdImages[0] && birdImages[1];
 }
 
-void update_bird(float &birdVelocity, int &birdY, SDL_Rect &birdRect)
+void update_bird(float &birdVelocity, int &birdY, SDL_Rect &birdRect,  float &birdAngle)
 {
     birdVelocity += GRAVITY;
     birdY += birdVelocity;
-
+     if (birdVelocity < 0) {
+        birdAngle = -10; // Khi bay lên, chim nghiêng lên trên
+        }
+    else if (birdVelocity > 0)
+    {
+        birdAngle += 1.5; // Khi rơi xuống, dần nghiêng xuống
+        if (birdAngle > 70) birdAngle = 70; // Giới hạn góc tối đa khi rơi
+    }
             // Giới hạn chim không rơi quá sàn hoặc bay ra khỏi màn hình
             if (birdY > SCREEN_HEIGHT - margin_bottom - 50) {
                 birdY = SCREEN_HEIGHT - margin_bottom - 50;
@@ -51,6 +59,7 @@ bool vacham(vector <Pipe> &pipes, int &birdY)
         nextPipe = &pipe;
         break;
         }
+
     }
 
 // Nếu có ống cần kiểm tra, chỉ kiểm tra 1 lần
@@ -62,8 +71,28 @@ bool vacham(vector <Pipe> &pipes, int &birdY)
     if (checkCollision(birdRect, upperPipeRect) || checkCollision(birdRect, lowerPipeRect)) {
             return false;
         }
+//        if (!nextPipe->passed && nextPipe->x + PIPE_WIDTH < BIRD_X) {
+//            nextPipe->passed = true;
+//            updateScore(score, highScore);
+//        }
+
     }
     return true;
+}
+
+void checkPass(vector<Pipe> &pipes, int &score) {
+    for (auto &pipe : pipes) {
+        if (!pipe.passed && pipe.x + PIPE_WIDTH < BIRD_X) {
+            pipe.passed = true; // Đánh dấu đã qua
+            score++; // Cộng điểm
+        }
+    }
+    updateScore(score, highScore);
+}
+
+void render_bird(SDL_Renderer* ren, SDL_Texture* birdImage, SDL_Rect &birdRect, float birdAngle) {
+    SDL_Point center = {birdRect.w / 2, birdRect.h / 2}; // Tâm xoay là trung tâm của hình ảnh chim
+    SDL_RenderCopyEx(ren, birdImage, NULL, &birdRect, birdAngle, &center, SDL_FLIP_NONE);
 }
 
 #endif // bird_h
