@@ -39,9 +39,7 @@ int main(int argc, char *argv[])
             return 0;
         }
 
-//    SDL_RenderCopy( ren, bgr, NULL, NULL);
-//
-//    SDL_RenderPresent( ren );
+
     int bgX = 0, ok = 0;
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
@@ -49,7 +47,6 @@ int main(int argc, char *argv[])
     SDL_Texture* textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, outlineColor);
     while (running) {
             waitPress(e,running, ok);
-     //   SDL_DestroyTexture(outlineTex);
             rStart(lastTime, toggleText, bgr, ren, textTex);
 
     }
@@ -79,11 +76,18 @@ int main(int argc, char *argv[])
             SDL_Quit();
             return 0;
         }
-        while(running)
+    while(running)
         {
-        waitPress2(running, e, birdVelocity, JUMP_FORCE);
+            if(!die){
+        waitPress2(running, e, birdVelocityY, JUMP_FORCE);
+            }
 
-        update_bird(birdVelocity, birdY, birdRect, birdAngle);
+        update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
+        if(birdY >= SCREEN_HEIGHT - margin_bottom - 50)
+        {
+            running = false;
+            break;
+        }
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
         lastFrameTime = currentFrameTime;
@@ -110,9 +114,11 @@ int main(int argc, char *argv[])
             render_bird(ren, currentBird, birdRect, birdAngle);
             SDL_Delay(16);
             checkPass(pipes, score);
-             if(!vacham(pipes, birdY)) running = false, die = true;
-              // Màu trắng
-//              //in điểm hiện tại
+             if(!vacham(pipes, birdX, birdY, die, birdVelocityX, birdVelocityY))
+             {
+                 update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
+             }
+
         SDL_Texture* textTexture = createText(ren, font2, to_string(score), white, white);
         SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
         SDL_Rect textRect = {(SCREEN_WIDTH - textW * 2) / 2, 20, textW*2, 50};
@@ -121,17 +127,15 @@ int main(int argc, char *argv[])
          SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
         textRect = {20, 10, textW, 15};
         SDL_RenderCopy(ren, textTexture, NULL, &textRect);
-            SDL_RenderPresent(ren);
+        SDL_RenderPresent(ren);
 
-                frame++;
-
-
+        frame++;
+        }
+        if(die)
+        {
 
         }
-            if(die)
-            {
 
-            }
     }
 
 

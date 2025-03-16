@@ -39,6 +39,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="overall.h" />
 		<Unit filename="pipe.h" />
+		<Unit filename="score.h" />
 		<Unit filename="text.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
