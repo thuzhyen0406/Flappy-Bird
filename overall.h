@@ -8,6 +8,7 @@ const int BG_SPEED = 3;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;
 
+SDL_Rect govRect = {225, 5, 400, 400};
 
 void Exit(SDL_Texture* birdImages[2], SDL_Window* window, SDL_Renderer* ren, SDL_Texture* bgr, SDL_Texture* upperPipeTex, SDL_Texture* lowerPipeTex)
 {
@@ -84,5 +85,23 @@ void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUM
                  birdVelocity = JUMP_FORCE;
 
      }
+}
+
+
+bool waitPress3(SDL_Event &e)
+{
+    while (SDL_PollEvent(&e)) {
+
+        if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_r) return true;
+                else return false;
+            }
+        if (e.type == SDL_KEYDOWN)
+        {
+            if (e.key.keysym.sym == SDLK_ESCAPE) return false;
+        }
+
+     }
+
 }
 #endif // OVERALL_H

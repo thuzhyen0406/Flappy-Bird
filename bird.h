@@ -14,7 +14,8 @@ float birdVelocityX = 0, birdVelocityY = 0; // Vận tốc chim
 float birdAngle = 0;
 int birdY = BIRD_Y;
 int birdX = BIRD_X;
-SDL_Rect birdRect = {BIRD_X, BIRD_Y, 60, 50};
+SDL_Rect birdRect = {BIRD_X, BIRD_Y, 45, 45};
+
 bool loadMedia(SDL_Renderer* ren) {
     birdImages[0] = loadTexture("Data/Image/bird3.png", ren);
     birdImages[1] = loadTexture("Data/Image/bird4.png", ren);
@@ -50,8 +51,8 @@ void update_bird(float &birdVelocityX, float &birdVelocityY, int &birdX, int &bi
         birdX += birdVelocityX;  // Cập nhật vị trí X
         birdY += birdVelocityY;
     }
-     if (birdY > SCREEN_HEIGHT - margin_bottom - 50) {
-                birdY = SCREEN_HEIGHT - margin_bottom - 50;
+     if (birdY > SCREEN_HEIGHT - margin_bottom - 45) {
+                birdY = SCREEN_HEIGHT - margin_bottom - 45;
                 birdVelocityY = 0;
                die = true;
             }
@@ -60,7 +61,7 @@ void update_bird(float &birdVelocityX, float &birdVelocityY, int &birdX, int &bi
                 birdVelocityY = GRAVITY;
             }
 
-    birdRect = {birdX, birdY, 50, 50};
+    birdRect = {birdX, birdY, 45, 45};
 }
 
 bool checkCollision(const SDL_Rect& a, const SDL_Rect& b) {
@@ -73,23 +74,23 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
 {
     Pipe *nextPipe = nullptr;
    for (Pipe& pipe : pipes) {
-    if (pipe.x + PIPE_WIDTH > BIRD_X) { // Chỉ xét các ống có thể va chạm
+    if (pipe.x + PIPE_WIDTH > BIRD_X) {
         nextPipe = &pipe;
         break;
         }
 
     }
 
-// Nếu có ống cần kiểm tra, chỉ kiểm tra 1 lần
+
     if (nextPipe) {
-    SDL_Rect birdRect = {birdX, birdY, 50, 50};
+    SDL_Rect birdRect = {birdX, birdY, 45, 45};
     SDL_Rect upperPipeRect = {nextPipe->x, 0, PIPE_WIDTH, nextPipe->y};
     SDL_Rect lowerPipeRect = {nextPipe->x, nextPipe->y + PIPE_GAP, PIPE_WIDTH, SCREEN_HEIGHT -  (nextPipe->y + PIPE_GAP) - margin_bottom};
 
     if (checkCollision(birdRect, upperPipeRect) || checkCollision(birdRect, lowerPipeRect)) {
-            birdVelocityX = -5; // Chim bay ngược lại
-            birdVelocityY = -5;  // Chim bật lên nhẹ
-            die = true;    // Bật hiệu ứng rơi
+            birdVelocityX = -5;
+            birdVelocityY = -5;
+            die = true;
             return false;
         }
 

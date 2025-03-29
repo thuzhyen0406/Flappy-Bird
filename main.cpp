@@ -10,6 +10,7 @@
 #include <ctime>
 #include <cstdlib>
 
+
 vector<Pipe> pipes;
 
 
@@ -43,8 +44,8 @@ int main(int argc, char *argv[])
     int bgX = 0, ok = 0;
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
-
-    SDL_Texture* textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, outlineColor);
+//doan nay can sua them
+    pii textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, textColor);
     while (running) {
             waitPress(e,running, ok);
             rStart(lastTime, toggleText, bgr, ren, textTex);
@@ -68,7 +69,7 @@ int main(int argc, char *argv[])
 //        SDL_RenderPresent( ren );
 //
         bool die = false;
-        SDL_Rect textRect;
+
         TTF_Font* font2 = TTF_OpenFont("Data/FONT/Consolas.ttf", 24);
         if (!font2) {
             SDL_Log("Không thể tải font: %s", TTF_GetError());
@@ -76,17 +77,19 @@ int main(int argc, char *argv[])
             SDL_Quit();
             return 0;
         }
+
     while(running)
         {
-            if(!die){
-        waitPress2(running, e, birdVelocityY, JUMP_FORCE);
+        if(!die){
+              waitPress2(running, e, birdVelocityY, JUMP_FORCE);
             }
 
         update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
         if(birdY >= SCREEN_HEIGHT - margin_bottom - 50)
         {
-            running = false;
-            break;
+            die = true;
+//            gDie(ren, running, e, score, highScore, font);
+//            continue;
         }
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
@@ -119,39 +122,47 @@ int main(int argc, char *argv[])
                  update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
              }
 
-        SDL_Texture* textTexture = createText(ren, font2, to_string(score), white, white);
-        SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
-        SDL_Rect textRect = {(SCREEN_WIDTH - textW * 2) / 2, 20, textW*2, 50};
-        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+        pii textTexture = createText(ren, font2, to_string(score), white, white);
+        Paint_text_score1(textTexture, ren, 1);
+
+        //chu co vien
+//        SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
+//        SDL_Rect textRect = {(SCREEN_WIDTH - textW * 2) / 2, 20, textW*2, 50};
+//        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
         textTexture = createText(ren, font2, "BEST SCORE: " + to_string(highScore), lightPink, lightPink);
-         SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
-        textRect = {20, 10, textW, 15};
-        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+//         SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
+//        textRect = {20, 10, textW, 15};
+//        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+        Paint_text_score1(textTexture, ren, 2);
         SDL_RenderPresent(ren);
 
         frame++;
-        }
-        if(die)
+
+          if(die)
         {
+           gDie(ren, running, e, score, highScore);
+           if(running)
+           {
+            birdX = 200; birdY = 250;
+            birdVelocityX = 0; birdVelocityY = 0;
+            pipes.clear();
+            initPipes(pipes);
+            die = false;
+            rebegin(bgr, ren, running, e);
+           }
 
         }
-
     }
 
 
-
-//        if(check)
-//        {
-//
-//        }
-
+}
 
 
 
 
       TTF_CloseFont(font);
-// day la ket thuc
 
+    //end
     Exit(birdImages, window, ren, bgr, upperPipeTex, lowerPipeTex);
     return 0;
 }
