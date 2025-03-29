@@ -7,7 +7,7 @@ void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
 {
 
         SDL_Texture *bdau = loadTexture("Data/Image/ready.png", ren);
-         // Uint32 lastFrameTime = SDL_GetTicks();
+
         SDL_RenderCopy(ren, bgr, NULL, NULL);
         renderTexture(bdau, 300, 120, ren);
           SDL_RenderPresent( ren );
@@ -36,21 +36,20 @@ void rStart(Uint32 &lastTime, bool &toggleText, SDL_Texture* bgr, SDL_Renderer* 
 
 void gDie(SDL_Renderer* ren, bool &running, SDL_Event &e, int &score, int highScore){
 
-    TTF_Font* font = TTF_OpenFont("Data/FONT/Consolas.ttf", 17);
+    TTF_Font* font = TTF_OpenFont("Data/FONT/font_game.ttf", 28);
     SDL_Texture* gov = loadTexture("Data/Image/gameover.png", ren);
     SDL_RenderCopy(ren, gov, NULL, &govRect);
-    //diem hien tao
-       pii textTexture = createText(ren, font, "CURRENT SCORE: " + to_string(score), yellowD, yellowD);
+
+       pii textTexture = createText(ren, font, "CURRENT SCORE: " + to_string(score), yellowD, brown, 1, 0);
        Paint_text_score1(textTexture, ren, 3);
-       //diem cao nhat
-            textTexture = createText(ren, font, "BEST SCORE: " + to_string(highScore), yellowD, yellowD);
-            Paint_text_score1(textTexture, ren, 4);
-   //thhong bao
-   font = TTF_OpenFont("Data/FONT/Consolas.ttf", 22);
-    textTexture = createText(ren, font, "Press R to Restart", yellowD, yellowD);
-       Paint_text_score1(textTexture, ren, 5);
-            textTexture = createText(ren, font, "Press R to Restart", yellowD, yellowD);
-            Paint_text_score1(textTexture, ren, 5);
+
+       textTexture = createText(ren, font, "BEST SCORE: " + to_string(highScore),yellowD, brown, 1, 0);
+       Paint_text_score1(textTexture, ren, 4);
+
+    font = TTF_OpenFont("Data/FONT/Consolas.ttf", 25);
+    textTexture = createText(ren, font, "Press R to Restart", yellowD, blueblack, 2, 1);
+    Paint_text_score1(textTexture, ren, 5);
+
     SDL_RenderPresent(ren);
     if(waitPress3(e))
     {
@@ -59,4 +58,4 @@ void gDie(SDL_Renderer* ren, bool &running, SDL_Event &e, int &score, int highSc
     else
         running = false;
 }
-#endif // bgr_wait
+#endif

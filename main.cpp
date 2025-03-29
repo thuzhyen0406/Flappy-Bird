@@ -9,7 +9,7 @@
 #include "bird.h"
 #include <ctime>
 #include <cstdlib>
-
+#include <SDL_mixer.h>
 
 vector<Pipe> pipes;
 
@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
     int bgX = 0, ok = 0;
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
-//doan nay can sua them
-    pii textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, textColor);
+
+    pii textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, brown, 2, 1);
     while (running) {
             waitPress(e,running, ok);
             rStart(lastTime, toggleText, bgr, ren, textTex);
@@ -65,9 +65,7 @@ int main(int argc, char *argv[])
         Uint32 lastFrameTime = SDL_GetTicks();
         initPipes(pipes);
         loadHighScore();
-//        renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
-//        SDL_RenderPresent( ren );
-//
+
         bool die = false;
 
         TTF_Font* font2 = TTF_OpenFont("Data/FONT/Consolas.ttf", 24);
@@ -88,8 +86,6 @@ int main(int argc, char *argv[])
         if(birdY >= SCREEN_HEIGHT - margin_bottom - 50)
         {
             die = true;
-//            gDie(ren, running, e, score, highScore, font);
-//            continue;
         }
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
@@ -122,17 +118,11 @@ int main(int argc, char *argv[])
                  update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
              }
 
-        pii textTexture = createText(ren, font2, to_string(score), white, white);
+        pii textTexture = createText(ren, font2, to_string(score), white, white, 0, 1);
         Paint_text_score1(textTexture, ren, 1);
 
-        //chu co vien
-//        SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
-//        SDL_Rect textRect = {(SCREEN_WIDTH - textW * 2) / 2, 20, textW*2, 50};
-//        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
-        textTexture = createText(ren, font2, "BEST SCORE: " + to_string(highScore), lightPink, lightPink);
-//         SDL_QueryTexture(textTexture, NULL, NULL, &textW, &textH);
-//        textRect = {20, 10, textW, 15};
-//        SDL_RenderCopy(ren, textTexture, NULL, &textRect);
+        textTexture = createText(ren, font2, "BEST SCORE: " + to_string(highScore), lightPink, lightPink, 0, 1);
+
         Paint_text_score1(textTexture, ren, 2);
         SDL_RenderPresent(ren);
 

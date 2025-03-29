@@ -8,7 +8,7 @@ const int BG_SPEED = 3;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;
 
-SDL_Rect govRect = {225, 5, 400, 400};
+SDL_Rect govRect = {190, -50, 490, 490};
 
 void Exit(SDL_Texture* birdImages[2], SDL_Window* window, SDL_Renderer* ren, SDL_Texture* bgr, SDL_Texture* upperPipeTex, SDL_Texture* lowerPipeTex)
 {
@@ -30,7 +30,7 @@ int waitUntilKeyPressed(SDL_Event &e)
     while (true) {
        if (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT)
-                return 0; // Nếu đóng cửa sổ thì cũng thoát
+                return 0; // nhấn x
             if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_ESCAPE)
                     return 0; // Nhấn ESC -> Thoát
@@ -40,7 +40,7 @@ int waitUntilKeyPressed(SDL_Event &e)
        if( e.type == SDL_MOUSEBUTTONDOWN) return 1;
 
         }
-   //     return 2;
+
         SDL_Delay(100);
     }
 }
@@ -100,6 +100,9 @@ bool waitPress3(SDL_Event &e)
         {
             if (e.key.keysym.sym == SDLK_ESCAPE) return false;
         }
+        if (e.type == SDL_QUIT) {
+                return false;
+            }
 
      }
 

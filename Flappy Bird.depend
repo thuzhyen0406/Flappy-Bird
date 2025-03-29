@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1743218536 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
+1743277515 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
 	<windows.h>
 	<string>
 	<SDL.h>
@@ -11,15 +11,16 @@
 	"bird.h"
 	<ctime>
 	<cstdlib>
+	<SDL_mixer.h>
 
 1742067139 d:\huyen\lap trinh nang cao\flappy bird\background.h
 	"overall.h"
 
-1743218931 d:\huyen\lap trinh nang cao\flappy bird\overall.h
+1743277764 d:\huyen\lap trinh nang cao\flappy bird\overall.h
 
-1743219234 d:\huyen\lap trinh nang cao\flappy bird\text.h
+1743277589 d:\huyen\lap trinh nang cao\flappy bird\text.h
 
-1743219234 d:\huyen\lap trinh nang cao\flappy bird\bgr_wait.h
+1743277648 d:\huyen\lap trinh nang cao\flappy bird\bgr_wait.h
 	"background.h"
 
 1742031145 d:\huyen\lap trinh nang cao\flappy bird\pipe.h
