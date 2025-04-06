@@ -5,7 +5,7 @@
 const int PIPE_WIDTH = 65;
 const int PIPE_HEIGHT = 373;
 const int PIPE_GAP = 160;
-const int PIPE_SPEED = 2;
+const int PIPE_SPEED = 3;
 using namespace std;
 
 const  int randMax = SCREEN_HEIGHT - margin_bottom - PIPE_GAP - 10;
@@ -39,11 +39,15 @@ void updatePipes(vector<Pipe> &pipes) {
 }
 
 void renderPipes(SDL_Renderer* ren, SDL_Texture* upperPipeTex, SDL_Texture* lowerPipeTex, vector<Pipe> &pipes) {
+    int texW, texH;
+    SDL_QueryTexture(upperPipeTex, NULL, NULL, &texW, &texH);
     for (const auto &pipe : pipes) {
         SDL_Rect upperPipe = {pipe.x, 0, PIPE_WIDTH, pipe.y};
         SDL_Rect lowerPipe = {pipe.x, pipe.y + PIPE_GAP, PIPE_WIDTH, SCREEN_HEIGHT - (pipe.y + PIPE_GAP) - margin_bottom};
-        SDL_RenderCopy(ren, upperPipeTex, NULL, &upperPipe);
-        SDL_RenderCopy(ren, lowerPipeTex, NULL, &lowerPipe);
+        SDL_Rect URect = {0, texH - pipe.y, texW, pipe.y};
+        SDL_Rect LRect = {0, 0, texW, SCREEN_HEIGHT - (pipe.y + PIPE_GAP) - margin_bottom};
+        SDL_RenderCopy(ren, upperPipeTex, &URect, &upperPipe);
+        SDL_RenderCopy(ren, lowerPipeTex, &LRect, &lowerPipe);
     }
 }
 
