@@ -1,10 +1,10 @@
 #ifndef OVERALL_H
 #define OVERALL_H
-
+#include "music.h"
 const int SCREEN_WIDTH = 850;
 const int SCREEN_HEIGHT = 500;
 const int margin_bottom = 74;
-const int BG_SPEED = 3;
+const int BG_SPEED = 3 ;
 bool toggleText = true;  // Bật/Tắt chữ
 unsigned int lastTime = 0;
 
@@ -68,7 +68,7 @@ void waitPress(SDL_Event &e, bool &running, int &ok)
         }
 }
 
-void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUMP_FORCE)
+void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUMP_FORCE, Mix_Chunk *gJump)
 {
      while (SDL_PollEvent(&e)) {
             if (e.type == SDL_QUIT) {
@@ -77,12 +77,23 @@ void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUM
             else if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_ESCAPE)
                     running = false;
-                else birdVelocity = JUMP_FORCE;
+                else if(e.key.keysym.sym == SDLK_s)
+                {
+                    if(!waitUntilKeyPressed(e)) running = false;
+                    else continue;
+                }
+                else {
+                        birdVelocity = JUMP_FORCE;
+                        play(gJump);
+                }
 
 
             }
             else if(e.type == SDL_MOUSEBUTTONDOWN)
-                 birdVelocity = JUMP_FORCE;
+                 {
+                     birdVelocity = JUMP_FORCE;
+                     play(gJump);
+                 }
 
      }
 }
@@ -90,21 +101,21 @@ void waitPress2(bool &running, SDL_Event &e,float &birdVelocity, float const JUM
 
 bool waitPress3(SDL_Event &e)
 {
-    while (SDL_PollEvent(&e)) {
+    while(true){
+    if (SDL_PollEvent(&e)) {
 
         if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_r) return true;
-                else return false;
-            }
-        if (e.type == SDL_KEYDOWN)
-        {
+
             if (e.key.keysym.sym == SDLK_ESCAPE) return false;
         }
+
         if (e.type == SDL_QUIT) {
                 return false;
             }
 
      }
+    }
 
 }
 #endif // OVERALL_H

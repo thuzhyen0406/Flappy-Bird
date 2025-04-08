@@ -2,6 +2,7 @@
 #define bird_h
 #include "pipe.h"
 #include "score.h"
+#include "music.h"
 using namespace std;
 SDL_Texture* birdImages[2] = {nullptr, nullptr};
 const int BIRD_X = 300;
@@ -34,17 +35,16 @@ void update_bird(float &birdVelocityX, float &birdVelocityY, int &birdX, int &bi
     else if (birdVelocityY > 0)
     {
         birdAngle += 1.5; // Khi rơi xuống, dần nghiêng xuống
-        if (birdAngle > 70) birdAngle = 70; // Giới hạn góc tối đa khi rơi
+        if (birdAngle > 50) birdAngle = 50; // Giới hạn góc tối đa khi rơi
     }
             // Giới hạn chim không rơi quá sàn hoặc bay ra khỏi màn hình
 
     }
     else{
-        birdVelocityY += 0.6f;  // Tăng tốc độ rơi
-        birdVelocityX *= 1;   // Giảm dần tốc độ bay ngược (mô phỏng ma sát không khí)
-        birdAngle -= 5;          // Chim quay nhanh hơn khi rơi
-        if (birdAngle > 100) {
-                birdAngle = 100;  // Giới hạn góc xoay
+        birdVelocityY += 0.3f;  // Tăng tốc độ rơi
+        birdAngle -= 3;          // Chim quay nhanh hơn khi rơi
+        if (birdAngle < -50) {
+                birdAngle = -50;  // Giới hạn góc xoay
                 die = true;
         }
 
@@ -56,18 +56,25 @@ void update_bird(float &birdVelocityX, float &birdVelocityY, int &birdX, int &bi
                 birdVelocityY = 0;
                die = true;
             }
-            if (birdY <= 0) {
+    if (birdY <= 0) {
                 birdY = 0;
-                birdVelocityY = GRAVITY;
+                die = true;
             }
 
     birdRect = {birdX, birdY, 45, 45};
 }
 
-bool checkCollision(const SDL_Rect& a, const SDL_Rect& b) {
+bool checkCollision(const SDL_Rect& a, const SDL_Rect& b, const int tmp) {
     if(a.y <= 0 || a.y + 50 >= SCREEN_HEIGHT - margin_bottom) return true;
-    return (a.x < b.x + b.w && a.x + a.w > b.x &&
-            a.y < b.y + b.h && a.y + a.h > b.y);
+    if(tmp == 1)
+    {
+        if(a.x + a.w < b.x || b.x + b.w < a.x || a.y > b.y + b.h) return false;
+    }
+    else
+    {
+        if(a.x + a.w < b.x || b.x + b.w < a.x || a.y + a.h < b.y) return false;
+    }
+        return true;
 }
 
 bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &birdVelocityX, float &birdVelocityY)
@@ -87,9 +94,9 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
     SDL_Rect upperPipeRect = {nextPipe->x, 0, PIPE_WIDTH, nextPipe->y};
     SDL_Rect lowerPipeRect = {nextPipe->x, nextPipe->y + PIPE_GAP, PIPE_WIDTH, SCREEN_HEIGHT -  (nextPipe->y + PIPE_GAP) - margin_bottom};
 
-    if (checkCollision(birdRect, upperPipeRect) || checkCollision(birdRect, lowerPipeRect)) {
-            birdVelocityX = -5;
-            birdVelocityY = -5;
+    if (checkCollision(birdRect, upperPipeRect, 1) || checkCollision(birdRect, lowerPipeRect, 2)) {
+            birdVelocityX = -2;
+            birdVelocityY = -4;
             die = true;
             return false;
         }
@@ -98,11 +105,12 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
     return true;
 }
 
-void checkPass(vector<Pipe> &pipes, int &score) {
+void checkPass(vector<Pipe> &pipes, int &score,  Mix_Chunk* gScore) {
     for (auto &pipe : pipes) {
         if (!pipe.passed && pipe.x + PIPE_WIDTH < BIRD_X) {
             pipe.passed = true;
             score++;
+            play(gScore);
         }
     }
     updateScore(score, highScore);
