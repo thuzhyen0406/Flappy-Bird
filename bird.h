@@ -9,15 +9,15 @@ const int BIRD_X = 300;
 const int BIRD_Y = 250;
 const int birdDelay = 10;
 
-const float GRAVITY = 0.5f; // Trọng lực kéo chim xuống
-const float JUMP_FORCE = -7.0f; // Lực nhảy lên
-float birdVelocityX = 0, birdVelocityY = 0; // Vận tốc chim
+const float GRAVITY = 0.5f;
+const float JUMP_FORCE = -7.0f; // Luc nhay
+float birdVelocityX = 0, birdVelocityY = 0; // van toc
 float birdAngle = 0;
 int birdY = BIRD_Y;
 int birdX = BIRD_X;
 SDL_Rect birdRect = {BIRD_X, BIRD_Y, 45, 45};
 
-bool loadMedia(SDL_Renderer* ren) {
+bool loadMedia1(SDL_Renderer* ren) {
     birdImages[0] = loadTexture("Data/Image/bird3.png", ren);
     birdImages[1] = loadTexture("Data/Image/bird4.png", ren);
 
@@ -30,21 +30,20 @@ void update_bird(float &birdVelocityX, float &birdVelocityY, int &birdX, int &bi
     birdVelocityY += GRAVITY;
     birdY += birdVelocityY;
      if (birdVelocityY < 0) {
-        birdAngle = -10; // Khi bay lên, chim nghiêng lên trên
+        birdAngle = -10;
         }
     else if (birdVelocityY > 0)
     {
-        birdAngle += 1.5; // Khi rơi xuống, dần nghiêng xuống
-        if (birdAngle > 50) birdAngle = 50; // Giới hạn góc tối đa khi rơi
+        birdAngle += 1.5;
+        if (birdAngle > 50) birdAngle = 50;
     }
-            // Giới hạn chim không rơi quá sàn hoặc bay ra khỏi màn hình
 
     }
     else{
-        birdVelocityY += 0.3f;  // Tăng tốc độ rơi
-        birdAngle -= 3;          // Chim quay nhanh hơn khi rơi
+        birdVelocityY += 0.3f;
+        birdAngle -= 3;
         if (birdAngle < -50) {
-                birdAngle = -50;  // Giới hạn góc xoay
+                birdAngle = -50;
                 die = true;
         }
 
@@ -81,7 +80,7 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
 {
     Pipe *nextPipe = nullptr;
    for (Pipe& pipe : pipes) {
-    if (pipe.x + PIPE_WIDTH > BIRD_X) {
+    if (pipe.x + PIPE_WIDTH > birdX) {
         nextPipe = &pipe;
         break;
         }
@@ -94,8 +93,14 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
     SDL_Rect upperPipeRect = {nextPipe->x, 0, PIPE_WIDTH, nextPipe->y};
     SDL_Rect lowerPipeRect = {nextPipe->x, nextPipe->y + PIPE_GAP, PIPE_WIDTH, SCREEN_HEIGHT -  (nextPipe->y + PIPE_GAP) - margin_bottom};
 
-    if (checkCollision(birdRect, upperPipeRect, 1) || checkCollision(birdRect, lowerPipeRect, 2)) {
-            birdVelocityX = -2;
+    if (checkCollision(birdRect, upperPipeRect, 1)) {
+            birdVelocityX = -3;
+            birdVelocityY = 0;
+            die = true;
+            return false;
+        }
+        if(checkCollision(birdRect, lowerPipeRect, 2)){
+             birdVelocityX = -3;
             birdVelocityY = -4;
             die = true;
             return false;
@@ -105,12 +110,12 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
     return true;
 }
 
-void checkPass(vector<Pipe> &pipes, int &score,  Mix_Chunk* gScore) {
+void checkPass(vector<Pipe> &pipes, int &score,  Mix_Chunk* gScore, const bool amthanh) {
     for (auto &pipe : pipes) {
         if (!pipe.passed && pipe.x + PIPE_WIDTH < BIRD_X) {
             pipe.passed = true;
             score++;
-            play(gScore);
+            if(amthanh) play(gScore);
         }
     }
     updateScore(score, highScore);

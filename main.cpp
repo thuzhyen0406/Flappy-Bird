@@ -9,10 +9,11 @@
 #include "bird.h"
 #include <ctime>
 #include <cstdlib>
-
+#include <iostream>
 
 vector<Pipe> pipes;
-
+using namespace std;
+ bool amthanh = true;
 int main(int argc, char *argv[])
 {
 
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
 
     bool running = true;
 
-        if (TTF_Init() == -1 || !loadMedia(ren)) {
+        if (TTF_Init() == -1 || !loadMedia1(ren) || !loadMedia2(ren)) {
             SDL_Log("Lỗi khởi tạo SDL_ttf: %s", TTF_GetError());
             return -1;
         }
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     bool showT = true, toggleText = true;
     Uint32 lastTime = SDL_GetTicks();
 
-    pii textTex = createText(ren, font, "Press S to Stop, Esc to Quit, Other keys to Start", textColor, brown, 2, 1);
+    pii textTex = createText(ren, font, "Press Enter to Start, Esc to Quit", textColor, brown, 2, 1);
     Mix_Music *RBG = loadMusic("Data/SOUND/rbg.mp3");
     while (running) {
             waitPress(e,running, ok);
@@ -64,9 +65,10 @@ int main(int argc, char *argv[])
         running = true;
         bgr = loadTexture("Data/Image/background2.jpg", ren);
         rebegin(bgr, ren, running, e);
+        //sau khi nhan phim ->bdau
         stopMusic(RBG);
         SDL_Texture* nen = loadTexture("Data/Image/nendat.jpg", ren);
-        int check = 1;
+        int chay = 0;
         Uint32 lastFrameTime = SDL_GetTicks();
         initPipes(pipes);
         loadHighScore();
@@ -85,18 +87,15 @@ int main(int argc, char *argv[])
     Mix_Chunk *gJump = loadSound("Data/SOUND/bay.mp3"); //tai tieng bay
     Mix_Chunk *gD = loadSound("Data/SOUND/vacham.wav"); //tai tieng dap vao cot
     Mix_Chunk *gScore = loadSound("Data/SOUND/addscore.mp3");
+      //  SDL_RenderPresent(ren);
+     SDL_Texture* btg_ht = btrs[chay];
 
     while(running)
         {
-        if(!die){
-              waitPress2(running, e, birdVelocityY, JUMP_FORCE, gJump);
-
-            }
-
-        update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
         if(birdY >= SCREEN_HEIGHT - margin_bottom - 50)
         {
             die = true;
+
         }
         Uint32 currentFrameTime = SDL_GetTicks();
         float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
@@ -122,20 +121,20 @@ int main(int argc, char *argv[])
             renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
 
             SDL_Delay(16);
-            checkPass(pipes, score, gScore);
 
+               checkPass(pipes, score, gScore, amthanh);
              if(!vacham(pipes, birdX, birdY, die, birdVelocityX, birdVelocityY))
              {
-                 play(gD);
+                 if(amthanh) play(gD);
                  update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
+
              }
         }
 
         else {
             renderPipes(ren, upperPipeTex, lowerPipeTex, pipes);
-          //  update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
-        }
 
+        }
 
         pii textTexture = createText(ren, font2, to_string(score), white, white, 0, 1);
         Paint_text_score1(textTexture, ren, 1);
@@ -143,6 +142,13 @@ int main(int argc, char *argv[])
         textTexture = createText(ren, font2, "BEST SCORE: " + to_string(highScore), lightPink, lightPink, 0, 1);
 
         Paint_text_score1(textTexture, ren, 2);
+                if(!die){
+              waitPress2(ren, chay, running, e, birdVelocityY, JUMP_FORCE, gJump, amthanh);
+              SDL_RenderCopy(ren, btrs[chay], NULL, &posbtrs);
+            }
+         // ve hinh tiep tuc
+        update_bird(birdVelocityX, birdVelocityY, birdX, birdY, birdRect, birdAngle, die);
+
         SDL_RenderPresent(ren);
 
         frame++;
@@ -150,6 +156,7 @@ int main(int argc, char *argv[])
           if(die && birdY >= SCREEN_HEIGHT - margin_bottom - 50)
         {
            Mix_Chunk *gEnd = loadSound("Data/SOUND/roidat.mp3");
+           if(amthanh)
             play(gEnd);
            gDie(ren, running, e, score, highScore);
            if(running)
@@ -160,9 +167,10 @@ int main(int argc, char *argv[])
             initPipes(pipes);
             die = false;
             Mix_Music *RBG = loadMusic("Data/SOUND/rbg.mp3");
-            play(RBG);
+            if(amthanh) play(RBG);
             rebegin(bgr, ren, running, e);
             stopMusic(RBG);
+            chay = 0;
            }
 
         }
@@ -176,9 +184,10 @@ int main(int argc, char *argv[])
 
       TTF_CloseFont(font);
 
-    //end
+    ///ket thuc
+     Mix_Quit();
     Exit(birdImages, window, ren, bgr, upperPipeTex, lowerPipeTex);
-    Mix_Quit();
+
     return 0;
 }
 
