@@ -26,9 +26,9 @@ void initPipes(vector<Pipe> &pipes) {
    pipes.push_back({SCREEN_WIDTH,  (Rand(randMin, randMax)), false});
 }
 
-void updatePipes(vector<Pipe> &pipes) {
+void updatePipes(vector<Pipe> &pipes, const float speedF) {
     for (auto &pipe : pipes) {
-        pipe.x -= PIPE_SPEED;
+        pipe.x -= PIPE_SPEED * speedF;
     }
     if (!pipes.empty() && pipes.front().x + PIPE_WIDTH < 0) {
         pipes.erase(pipes.begin());

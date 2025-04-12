@@ -9,8 +9,8 @@ const int BIRD_X = 300;
 const int BIRD_Y = 250;
 const int birdDelay = 10;
 
-const float GRAVITY = 0.5f;
-const float JUMP_FORCE = -7.0f; // Luc nhay
+ float GRAVITY = 0.5f;
+ float JUMP_FORCE = -7.0f; // Luc nhay
 float birdVelocityX = 0, birdVelocityY = 0; // van toc
 float birdAngle = 0;
 int birdY = BIRD_Y;

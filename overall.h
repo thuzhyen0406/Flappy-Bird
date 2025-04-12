@@ -12,7 +12,9 @@ unsigned int lastTime = 0;
 SDL_Rect govRect = {190, -50, 490, 490};
 SDL_Texture* btrs[2] = {nullptr, nullptr};
 SDL_Rect posbtrs = {SCREEN_WIDTH - 100, 0, 35, 35};
-
+SDL_Rect Stpos = {350, 400, 64, 60};
+SDL_Rect Hlpos = {420, 400, 70, 70};
+SDL_Rect RTpos = {0, 0, 70, 70};
 void Exit(SDL_Texture* birdImages[2], SDL_Window* window, SDL_Renderer* ren, SDL_Texture* bgr, SDL_Texture* upperPipeTex, SDL_Texture* lowerPipeTex)
 {
     for (int i = 0; i < 2; i++) {
@@ -48,8 +50,12 @@ int waitUntilKeyPressed(SDL_Event &e)
     }
 }
 
+bool inSide(int x, int y, SDL_Rect rect) {
+    return (x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h);
+}
 
-void waitPress(SDL_Event &e, bool &running, int &ok)
+
+void waitPress(SDL_Event &e, bool &running, int &ok, bool &amthanh, bool &getHelp)
 {
 
     while (SDL_PollEvent(&e)) {
@@ -60,12 +66,31 @@ void waitPress(SDL_Event &e, bool &running, int &ok)
                 if (e.key.keysym.sym == SDLK_ESCAPE) {
                     running = false, ok = 0;
                 }
-                else running = false, ok = 1;
+                else if(e.key.keysym.sym == SDLK_m)
+                {
+                    amthanh = !amthanh;
+                }
+                else if(!getHelp){
+                        running = false, ok = 1;
+                }
 
             }
             else if(e.type ==  SDL_MOUSEBUTTONDOWN)
             {
-                running = false, ok = 1;
+                if(inSide(e.button.x, e.button.y, Stpos))
+                {
+                    running = false;
+                    ok = 1;
+                }
+                else if(inSide(e.button.x, e.button.y, Hlpos))
+                {
+                    getHelp = 1;
+                }
+                 else if(getHelp && inSide(e.button.x, e.button.y, RTpos))
+                 {
+                     getHelp = 0;
+                 }
+
             }
 
         }

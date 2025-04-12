@@ -8,6 +8,20 @@ bool loadMedia2(SDL_Renderer* ren) {
     return btrs[0] && btrs[1];
 }
 
+//void rebegin(SDL_Texture* bgr, SDL_Texture* bg3, SDL_Renderer* ren, bool &running, SDL_Event &e)
+//{
+//
+//        SDL_Texture *bdau = loadTexture("Data/Image/ready.png", ren);
+//
+//        SDL_RenderCopy(ren, bgr, NULL, NULL);
+//        renderTexture(bdau, 300, 120, ren);
+//        SDL_RenderCopy(ren, bg3, NULL, &RTpos);
+//          SDL_RenderPresent( ren );
+//          if(!waitUntilKeyPressed(e))
+//          {
+//              running = false;
+//          }
+//}
 void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
 {
 
@@ -15,28 +29,48 @@ void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
 
         SDL_RenderCopy(ren, bgr, NULL, NULL);
         renderTexture(bdau, 300, 120, ren);
+      //  SDL_RenderCopy(ren, bg3, NULL, &RTpos);
           SDL_RenderPresent( ren );
           if(!waitUntilKeyPressed(e))
           {
               running = false;
           }
 }
+//void gHelp( SDL_Texture* bgr, SDL_Renderer* ren,  )
+//{
+//
+//}
 
 
-void rStart(Uint32 &lastTime, bool &toggleText, SDL_Texture* bgr, SDL_Renderer* ren, pii textTex )
+void rStart(SDL_Texture* bgr, SDL_Texture* bg1, SDL_Texture* bg2, SDL_Renderer* ren)
 {
-    if (SDL_GetTicks() - lastTime > 800) {
-            toggleText = !toggleText;
-            lastTime = SDL_GetTicks();
-        }
         SDL_RenderClear(ren);
         SDL_RenderCopy(ren, bgr, NULL, NULL);
-        if (toggleText) {
-            SDL_RenderCopy(ren, textTex.first, NULL, &textRect);
-            SDL_RenderCopy(ren, textTex.second, NULL, &textRect);
-        }
+      SDL_RenderCopy(ren, bg1, NULL, &Stpos);
+      SDL_RenderCopy(ren, bg2, NULL, &Hlpos);
 
         SDL_RenderPresent(ren);
+}
+
+
+void gHelp(SDL_Texture* bgr, SDL_Texture* bg3, SDL_Renderer* ren, bool &getHelp, pii textTex1, pii textTex2, pii textTex3, pii textTex4)
+{
+    SDL_RenderClear(ren);
+    SDL_RenderCopy(ren, bgr, NULL, NULL);
+    SDL_RenderCopy(ren, bg3, NULL, &RTpos);
+    SDL_RenderCopy(ren, textTex1.first, NULL, &textRect1);
+    SDL_RenderCopy(ren, textTex1.second, NULL, &textRect1);
+
+    SDL_RenderCopy(ren, textTex2.first, NULL, &textRect2);
+    SDL_RenderCopy(ren, textTex2.second, NULL, &textRect2);
+
+      SDL_RenderCopy(ren, textTex3.first, NULL, &textRect3);
+    SDL_RenderCopy(ren, textTex3.second, NULL, &textRect3);
+
+      SDL_RenderCopy(ren, textTex4.first, NULL, &textRect4);
+    SDL_RenderCopy(ren, textTex4.second, NULL, &textRect4);
+    SDL_RenderPresent(ren);
+
 }
 
 void gDie(SDL_Renderer* ren, bool &running, SDL_Event &e, int &score, int highScore){
@@ -52,9 +86,7 @@ void gDie(SDL_Renderer* ren, bool &running, SDL_Event &e, int &score, int highSc
        Paint_text_score1(textTexture, ren, 4);
 
     font = TTF_OpenFont("Data/FONT/Consolas.ttf", 25);
-    textTexture = createText(ren, font, "Press R to Restart", yellowD, blueblack, 2, 1);
-    Paint_text_score1(textTexture, ren, 5);
-    SDL_RenderCopy(ren, btrs[1], NULL, &posbtrs);
+    SDL_RenderCopy(ren, btrs[1], NULL, &posbtrs); //nut tam dung
 
     SDL_RenderPresent(ren);
     if(waitPress3(e))

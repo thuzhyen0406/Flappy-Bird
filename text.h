@@ -10,8 +10,10 @@ int textW = 200, textH = 35;
 int tw = 100, th = 20;
 SDL_Color lightPink = {255, 182, 193, 255};
 SDL_Color textColor = {255, 255, 102, 255}, outlineColor = {0, 0, 0, 255};
-SDL_Rect textRect = {230, 400, 400, 28};
-//SDL_Color yellowD = {230, 200, 20, 255};
+SDL_Rect textRect1 = {230, 100, 400, 28};
+SDL_Rect textRect2 = {250, 150, 360, 28};
+SDL_Rect textRect3 = {290, 200, 290, 28};
+SDL_Rect textRect4 = {300, 250, 230, 28};
 SDL_Color yellowD = {255, 255, 0, 255};
 SDL_Color black = {0, 0, 0, 255};
 SDL_Color blueblack = {0, 0, 128, 255};
@@ -63,8 +65,6 @@ void Paint_text_score1(pii textTex, SDL_Renderer* ren, int res)
      case 4:
         textRect = {(SCREEN_WIDTH - tw- 40) / 2, 256, tw + 40, th + 5};
         break;
-     default:
-        textRect = {(SCREEN_WIDTH - tw) / 2, 350, tw + 10, th + 5};
      }
 
     SDL_RenderCopy(ren, textTex.first, NULL, &textRect);
@@ -88,8 +88,6 @@ void Paint_text_score1(pii textTex, SDL_Renderer* ren, int res)
      case 4:
         textRect = {(SCREEN_WIDTH - tw - 40) / 2, 256, tw + 40, th + 5};
         break;
-     default:
-        textRect = {(SCREEN_WIDTH - tw) / 2, 350, tw + 10, th + 5};
      }
 
     SDL_RenderCopy(ren, textTex.second, NULL, &textRect);
