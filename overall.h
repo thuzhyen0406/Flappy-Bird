@@ -11,6 +11,7 @@ unsigned int lastTime = 0;
 
 SDL_Rect govRect = {190, -50, 490, 490};
 SDL_Texture* btrs[2] = {nullptr, nullptr};
+SDL_Texture* bgrt[2] = {nullptr, nullptr};
 SDL_Rect posbtrs = {SCREEN_WIDTH - 100, 0, 35, 35};
 SDL_Rect Stpos = {350, 400, 64, 60};
 SDL_Rect Hlpos = {420, 400, 70, 70};

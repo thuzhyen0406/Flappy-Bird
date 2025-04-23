@@ -8,20 +8,7 @@ bool loadMedia2(SDL_Renderer* ren) {
     return btrs[0] && btrs[1];
 }
 
-//void rebegin(SDL_Texture* bgr, SDL_Texture* bg3, SDL_Renderer* ren, bool &running, SDL_Event &e)
-//{
-//
-//        SDL_Texture *bdau = loadTexture("Data/Image/ready.png", ren);
-//
-//        SDL_RenderCopy(ren, bgr, NULL, NULL);
-//        renderTexture(bdau, 300, 120, ren);
-//        SDL_RenderCopy(ren, bg3, NULL, &RTpos);
-//          SDL_RenderPresent( ren );
-//          if(!waitUntilKeyPressed(e))
-//          {
-//              running = false;
-//          }
-//}
+
 void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
 {
 
@@ -36,10 +23,6 @@ void rebegin(SDL_Texture* bgr, SDL_Renderer* ren, bool &running, SDL_Event &e)
               running = false;
           }
 }
-//void gHelp( SDL_Texture* bgr, SDL_Renderer* ren,  )
-//{
-//
-//}
 
 
 void rStart(SDL_Texture* bgr, SDL_Texture* bg1, SDL_Texture* bg2, SDL_Renderer* ren)

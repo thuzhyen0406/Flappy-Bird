@@ -1,6 +1,8 @@
 #ifndef BACKFROUND_H
 #define BACKGROUND_H
 #include "overall.h"
+
+
 void logErrorAndExit(const char* msg, const char* error)
 {
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_ERROR, "%s: %s", msg, error);
@@ -60,4 +62,9 @@ SDL_Texture *loadTexture(const char *filename, SDL_Renderer* renderer)
 	return texture;
 } // hàm nạp ảnh vào texture
 
+bool loadMedia0(SDL_Renderer* ren) {
+    bgrt[0] = loadTexture("Data/Image/bgrt1.jpg", ren);
+     bgrt[1] = loadTexture("Data/Image/bgrt2.jpg", ren);
+    return bgrt[0] && bgrt[1];
+}
 #endif // BACKFROUND_H

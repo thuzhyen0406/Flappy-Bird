@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1744424722 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
+1745436907 source:d:\huyen\lap trinh nang cao\flappy bird\main.cpp
 	<windows.h>
 	<string>
 	<SDL.h>
@@ -13,31 +13,76 @@
 	<cstdlib>
 	<iostream>
 
-1742067139 d:\huyen\lap trinh nang cao\flappy bird\background.h
+1745409371 d:\huyen\lap trinh nang cao\flappy bird\background.h
 	"overall.h"
 
-1744423786 d:\huyen\lap trinh nang cao\flappy bird\overall.h
+1745409371 d:\huyen\lap trinh nang cao\flappy bird\overall.h
 	"music.h"
 
-1744424505 d:\huyen\lap trinh nang cao\flappy bird\text.h
+1745388822 d:\huyen\lap trinh nang cao\flappy bird\text.h
 
-1744424692 d:\huyen\lap trinh nang cao\flappy bird\bgr_wait.h
+1745407541 d:\huyen\lap trinh nang cao\flappy bird\bgr_wait.h
 	"background.h"
 
-1743971144 d:\huyen\lap trinh nang cao\flappy bird\pipe.h
+1745437173 d:\huyen\lap trinh nang cao\flappy bird\pipe.h
 	<vector>
 	"overall.h"
 
-1742052144 source:d:\huyen\lap trinh nang cao\flappy bird\bird.cpp
+1745387493 source:d:\huyen\lap trinh nang cao\flappy bird\bird.cpp
+	"bird.h"
+	"background.h"
 
-1744258911 d:\huyen\lap trinh nang cao\flappy bird\bird.h
+1745434078 d:\huyen\lap trinh nang cao\flappy bird\bird.h
 	"pipe.h"
 	"score.h"
 	"music.h"
 
-1742063038 d:\huyen\lap trinh nang cao\flappy bird\score.h
+1745388822 d:\huyen\lap trinh nang cao\flappy bird\score.h
 	<fstream>
 
-1744136191 d:\huyen\lap trinh nang cao\flappy bird\music.h
+1745388822 d:\huyen\lap trinh nang cao\flappy bird\music.h
 	<SDL_mixer.h>
+
+1745388519 d:\huyen\lap trinh nang cao\flappy bird\declare.h
+	"pipe.h"
+
+1745379575 source:d:\huyen\lap trinh nang cao\flappy bird\declare.cpp
+	<windows.h>
+	<string>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	"text.h"
+	"bgr_wait.h"
+	"pipe.h"
+	"bird.h"
+	"declare.h"
+
+1745380403 source:d:\huyen\lap trinh nang cao\flappy bird\background.cpp
+	"background.h"
+	"overall.h"
+
+1745381513 source:d:\huyen\lap trinh nang cao\flappy bird\overall.cpp
+	"music.h"
+	<SDL_ttf.h>
+	"bgr_wait.h"
+
+1745382114 source:d:\huyen\lap trinh nang cao\flappy bird\text.cpp
+	<SDL.h>
+	"text.h"
+
+1745386634 source:d:\huyen\lap trinh nang cao\flappy bird\music.cpp
+	<SDL_mixer.h>
+	<SDL.h>
+	"music.h"
+
+1745387656 source:d:\huyen\lap trinh nang cao\flappy bird\pipe.cpp
+	"pipe.h"
+
+1745386961 source:d:\huyen\lap trinh nang cao\flappy bird\score.cpp
+	"score.h"
+	<fstream>
+
+1745387141 source:d:\huyen\lap trinh nang cao\flappy bird\bgr_wait.cpp
+	"bgr_wait.h"
 

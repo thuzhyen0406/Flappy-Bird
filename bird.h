@@ -105,7 +105,26 @@ bool vacham(vector <Pipe> &pipes, int &birdX, int &birdY, bool &die, float &bird
             die = true;
             return false;
         }
+    if (nextPipe->hasGift) {
+        SDL_Rect giftRect = { nextPipe->x + PIPE_WIDTH / 2 - 12, nextPipe->y + PIPE_GAP / 2 - 12, 30, 30};
 
+            if(nextPipe->hasBom)
+            {
+                 if (SDL_HasIntersection(&giftRect, &birdRect))
+                 {
+                     nextPipe->hasBom = false;
+                     nextPipe->hasGift = false;
+                     GRAVITY *= -1;
+                    JUMP_FORCE  *= -1;
+                 }
+            }
+            else{
+        if (SDL_HasIntersection(&giftRect, &birdRect)) {
+            nextPipe->hasGift = false; // Hộp quà đã được lấy
+            score += 4; // Tăng điểm
+            }
+        }
+        }
     }
     return true;
 }
