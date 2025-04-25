@@ -53,14 +53,14 @@ Một số chú ý: <br/>
 ![image](Data/Image/begin_BR.jpg) <br/>
 [📌Nguồn](https://www.instagram.com/10xchallenge/p/C_3PzCdChff/?api=postMessagehttps%3A%2F%2Fwww.instagram.com%2Fp%2FC6ik27WJvMP%2F%3Fapi%3DpostMessage&hl=zh-cn)
 - Để xem hướng dẫn chọn: <br/>
-![image](Data/Image/help.png) <br/>
+![image](Data/Image/Help.png) <br/>
 - Để quay lại chọn: <br/>
 ![image](Data/Image/return.png) <br/>
 
 - Người chơi nhấn Enter hoặc chọn để chuyển sang màn hình chờ. <br/>
 ![image](Data/Image/Start.png)
 <br/>
-[📌Nguồn](https://vi.pngtree.com/)
+
  - Từ màn hình chờ, nhấn chuột trái hoặc Enter để chơi. <br/>
  ![image](Data/Image/ready.png)
 
