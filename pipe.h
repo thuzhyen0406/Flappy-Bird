@@ -27,7 +27,7 @@ int Rand(int l, int r)
 
 
 void initPipes(vector<Pipe> &pipes) {
-   bool t1 = (Rand(0, 6) == 0);
+   bool t1 = (Rand(0, 5) == 0);
    if(t1)
    pipes.push_back({SCREEN_WIDTH,  (Rand(randMin, randMax)), false, t1,  Rand(0, 1)});
    else

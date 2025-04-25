@@ -129,21 +129,25 @@ int main(int argc, char *argv[])
         }
         if(!cur) // truong hop 1
         {
-            if(score > 5) {
-                    PIPE_SPACE = Rand(200, 400);
+            if(score > 30) {
+                    PIPE_SPACE = 200;
+                    PIPE_GAP = 140;
             }
-                if((score / 10) % 2 == 1)
-            {
-                PIPE_GAP = Rand(140, 180);
+            else if(score > 20) {
+                    PIPE_SPACE = 300;
+                    PIPE_GAP = 160;
             }
-            speedF = min(1.0f + score * 0.03f, 3.0f);
+            else{
+             PIPE_SPACE = 350;
+             PIPE_GAP = 180;
+            }
+            speedF = min(1.0f + score * 0.05f, 3.0f);
 
         }
         else
         {
-            PIPE_SPACE = 350;
-            PIPE_GAP = 200;
-            speedF = 1.5f;
+            speedF = min(speedF, 1.8f);
+
         }
         bgr = bgrt[index];
         Uint32 currentFrameTime = SDL_GetTicks();
@@ -225,7 +229,7 @@ int main(int argc, char *argv[])
            {
             birdX = 200; birdY = 250;
             PIPE_GAP = 180;
-            PIPE_SPACE = 300;
+            PIPE_SPACE = 350;
             birdVelocityX = 0; birdVelocityY = 0;
             pipes.clear();
             initPipes(pipes);
@@ -235,7 +239,6 @@ int main(int argc, char *argv[])
             JUMP_FORCE = -7.0f;
             Mix_Music *RBG = loadMusic("Data/SOUND/rbg.mp3");
             if(amthanh) play(RBG);
-            //rebegin(bgr, bg3, ren, running, e);
             rebegin(bgr, ren, running, e);
             stopMusic(RBG);
             chay = 0;
