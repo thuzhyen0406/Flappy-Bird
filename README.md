@@ -107,8 +107,11 @@ Một số chú ý: <br/>
 - Xuất hiện ngẫu nhiên. Khi ăn lần đầu thì yếu tố vật lí của game bị đảo ngược (nhấn phím thì bay xuống, nhả phím tự bay lên), ăn lần 2 các yếu tố trở lại bình thường.
 ![image](Data/Image/bom.png)
 <br/>
+
 6. **Điểm**
 - Điểm kỉ lục được hiện ở góc trái, điểm hiện tại hiện giữa màn hình phía trên.
+<br/>
+
 ### Mẹo chơi game
 - **Không nhấn liên tục**: Chỉ nhấn khi cần điều chỉnh độ cao
 - **Giữ nhịp độ ổn định**: Tìm một nhịp nhấn phím phù hợp
